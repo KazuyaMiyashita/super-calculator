@@ -23,4 +23,20 @@ object Parser {
   //   }
   // }
 
+  def nest(tokens: List[Token]): Nest[Token] = {
+    def proc(nest: Nest[Token], remain: List[Token], acc: Nest[Token]): (Nest[Token], List[Token], Nest[Token]) = {
+      if (remain.isEmpty) (nest, remain, NestNil)
+      else {
+        remain.head match {
+          case ParenOpen => proc(nest, remain.tail, NestLeaf(remain.head))
+          case ParenClose => proc(List(NestList(acc.value.reverse), nest), remain.tail, NestNil)
+          case t => proc(NestLeaf(t), remain.tail, acc)
+        }
+      }
+    }
+
+    ???
+
+  }
+
 }

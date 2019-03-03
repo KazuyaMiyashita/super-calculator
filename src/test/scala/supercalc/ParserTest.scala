@@ -4,7 +4,7 @@ import org.scalatest.FunSuite
 
 class ParserTest extends FunSuite {
 
-  test("Tokenizer.tokenize") {
+  test("Parser.parse") {
     // val tokens = Tokenizer.tokenize("1 add (23 multiple 456)")
     val parsed = Parser.parse(List(
       Number(1),
