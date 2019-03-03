@@ -28,4 +28,31 @@ class ParserTest extends FunSuite {
     assert(parsed == expect)
   }
 
+  test("Nest") {
+    val tokens = List(
+      Number(1),
+      Number(2),
+      ParenOpen,
+      Number(3),
+      Number(4),
+      Number(5),
+      ParenClose
+    )
+    val nested = Parser.nest(tokens)
+
+    println(nested)
+
+    val expect: Nest[Token] = Nest(
+      NestLeaf(Number(1)),
+      NestLeaf(Number(2)),
+      NestList(
+        NestLeaf(Number(3)),
+        NestLeaf(Number(4)),
+        NestLeaf(Number(5))
+      )
+    )
+
+    assert(nested == expect)
+  }
+
 }
