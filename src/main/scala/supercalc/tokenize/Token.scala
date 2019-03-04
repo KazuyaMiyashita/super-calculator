@@ -1,4 +1,4 @@
-package supercalc
+package supercalc.tokenize
 
 sealed abstract class Token
 

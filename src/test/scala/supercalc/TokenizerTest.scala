@@ -1,4 +1,4 @@
-package supercalc
+package supercalc.tokenize
 
 import org.scalatest.FunSuite
 
