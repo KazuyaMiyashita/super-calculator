@@ -1,4 +1,4 @@
-package supercalc.tokenize
+package supercalc
 
 class NumericCharHandler extends CharHandler {
 
@@ -9,7 +9,6 @@ class NumericCharHandler extends CharHandler {
 
   def constructToken(cs: List[Char]): Token = Number(cs.reverse.mkString.toInt)
   def handleMain(tokens: List[Token], remain: List[Char], acc: List[Char]): (List[Token], List[Char]) = {
-    println("handleNumericChar > tokens: %s, remain: %s, acc: %s".format(tokens, remain, acc))
     if (remain.isEmpty) (tokens, Nil)
     else {
       remain.head match {

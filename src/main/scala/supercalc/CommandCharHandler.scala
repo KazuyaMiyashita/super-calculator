@@ -1,4 +1,4 @@
-package supercalc.tokenize
+package supercalc
 
 class CommandCharHandler extends CharHandler {
 
@@ -13,7 +13,6 @@ class CommandCharHandler extends CharHandler {
     case s => throw new Exception("Parse Error: No Existing Command %s".format(s))
   }
   def handleMain(tokens: List[Token], remain: List[Char], acc: List[Char]): (List[Token], List[Char]) = {
-    println("handleCommandChar >tokens: %s, remain: %s, acc: %s".format(tokens, remain, acc))
     if (remain.isEmpty) (tokens, Nil)
     else {
       remain.head match {
