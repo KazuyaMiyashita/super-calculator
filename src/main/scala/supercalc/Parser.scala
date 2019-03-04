@@ -4,16 +4,21 @@ import scala.util.{Try, Success, Failure}
 
 object Parser {
 
-  def parse(tokens: List[Token]): BinaryTree[Token] = {
-    Node(
-      op = CommandAdd,
-      left = Leaf(Number(1)),
-      right = Node(
-        op = CommandMultiple,
-        left = Leaf(Number(23)),
-        right = Leaf(Number(456))
-      )
-    )
+  def parse(tokens: List[Token]): Option[BinaryTree[Token]] = {
+
+    val nested: Option[List[Any]] = nest(tokens)
+    val tree: Option[BinaryTree[Token]] = nested flatMap { n => mkTree(n) }
+
+    tree
+    // Node(
+    //   op = CommandAdd,
+    //   left = Leaf(Number(1)),
+    //   right = Node(
+    //     op = CommandMultiple,
+    //     left = Leaf(Number(23)),
+    //     right = Leaf(Number(456))
+    //   )
+    // )
   }
 
   /**
@@ -52,6 +57,25 @@ object Parser {
       case Success(n) => Some(reverse(n))
       case Failure(e) => None
     }
+  }
+
+  def mkTree(nest: List[Any]): Option[BinaryTree[Token]] = {
+
+    /**
+     * tokensの長さが奇数 (ex. Number(1), CommandMultiple, Number(2), CommandAdd, Number(3) の時に
+     * 計算順序を考慮して二分木にする
+     */
+    def convert(tokens: List[Token]): Option[BinaryTree] = {
+      ???
+    }
+
+    // nest.map { n => 
+    //   if (n.isInstanceOf[List[Any]]) mkTree(n.asInstanceOf[List[Any]])
+    //   else n
+    // }
+
+
+    ???
   }
 
 }
