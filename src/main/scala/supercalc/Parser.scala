@@ -17,7 +17,7 @@ object Parser {
   }
 
   /**
-   * @params tokens: ex. List(Number(1), ParenOpen, Number(2), Number(3), ParenClose)
+   * @param tokens ex. List(Number(1), ParenOpen, Number(2), Number(3), ParenClose)
    * @return ex. List(Number(1), List(Number(2), Number(3))
    */
   def nest(tokens: List[Token]): Option[List[Any]] = {
