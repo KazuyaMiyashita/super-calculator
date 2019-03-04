@@ -86,4 +86,36 @@ class ParserTest extends FunSuite {
     assert(nested == expect)
   }
 
+  test("NestFail") {
+    val tokens = List(
+      Number(1),
+      Number(2),
+      ParenClose,
+      ParenOpen,
+      ParenOpen,
+      Number(3),
+      Number(4),
+      ParenClose,
+      ParenClose,
+      Number(5),
+    )
+    val nested = Parser.nest(tokens)
+
+    println(nested)
+
+    val expect: List[Any] = List(
+      Number(1),
+      Number(2),
+      List(
+        List(
+          Number(3),
+          Number(4)
+        ),
+        Number(5)
+      )
+    )
+
+    assert(nested == expect)
+  }
+
 }
