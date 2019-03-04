@@ -1,5 +1,7 @@
 package supercalc
 
+import scala.util.{Try, Success, Failure}
+
 object Parser {
 
   def parse(tokens: List[Token]): BinaryTree[Token] = {
@@ -18,18 +20,23 @@ object Parser {
    * @params tokens: ex. List(Number(1), ParenOpen, Number(2), Number(3), ParenClose)
    * @return ex. List(Number(1), List(Number(2), Number(3))
    */
-  def nest(tokens: List[Token]): List[Any] = {
+  def nest(tokens: List[Token]): Option[List[Any]] = {
 
-    def proc(nest: List[Any], remain: List[Token], acc: List[Token]): (List[Any], List[Token], List[Token]) = {
-      if (remain.isEmpty) (nest, Nil, Nil)
-      else {
+    def proc(nest: List[Any], remain: List[Token], indent: Int): (List[Any], List[Token], Int) = {
+      if (remain.isEmpty) {
+        if (indent == 0) (nest, Nil, 0)
+        else throw new Exception("括弧の対応がおかしい")
+      } else {
         remain.head match {
           case ParenOpen => {
-            val (n, r, a) = proc(Nil, remain.tail, Nil)
-            proc(n ::: nest, r, a)
+            val (n, r, i) = proc(Nil, remain.tail, indent + 1)
+            proc(n ::: nest, r, i)
           }
-          case ParenClose => proc(nest :: Nil, remain.tail, Nil)
-          case t => proc(t :: nest, remain.tail, Nil)
+          case ParenClose => {
+            if (indent > 0) proc(nest :: Nil, remain.tail, indent - 1)
+            else throw new Exception("括弧の対応がおかしい")
+          }
+          case t => proc(t :: nest, remain.tail, indent)
         }
       }
     }
@@ -38,8 +45,13 @@ object Parser {
       nest.reverse.map { n => if (n.isInstanceOf[List[Any]]) reverse(n.asInstanceOf[List[Any]]) else n }
     }
 
-    val (nest, _, _) = proc(Nil, tokens, Nil)
-    reverse(nest)
+    Try {
+      val (nest, _, _) = proc(Nil, tokens, 0)
+      nest
+    } match {
+      case Success(n) => Some(reverse(n))
+      case Failure(e) => None
+    }
   }
 
 }

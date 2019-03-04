@@ -38,9 +38,9 @@ class ParserTest extends FunSuite {
       Number(5),
       ParenClose
     )
-    val nested = Parser.nest(tokens)
+    val nested = Parser.nest(tokens).get
 
-    println(nested)
+    // println(nested)
 
     val expect: List[Any] = List(
       Number(1),
@@ -67,9 +67,9 @@ class ParserTest extends FunSuite {
       Number(5),
       ParenClose
     )
-    val nested = Parser.nest(tokens)
+    val nested = Parser.nest(tokens).get
 
-    println(nested)
+    // println(nested)
 
     val expect: List[Any] = List(
       Number(1),
@@ -88,34 +88,40 @@ class ParserTest extends FunSuite {
 
   test("NestFail") {
     val tokens = List(
+      ParenClose,
+    )
+    val nested = Parser.nest(tokens)
+    // println(nested)
+
+    assert(nested == None)
+  }
+
+  test("NestFail2") {
+    val tokens = List(
+      ParenOpen,
+    )
+    val nested = Parser.nest(tokens)
+    // println(nested)
+    
+    assert(nested == None)
+  }
+
+  test("NestFail3") {
+    val tokens = List(
       Number(1),
       Number(2),
-      ParenClose,
+      ParenOpen,
       ParenOpen,
       ParenOpen,
       Number(3),
       Number(4),
       ParenClose,
       ParenClose,
-      Number(5),
     )
     val nested = Parser.nest(tokens)
-
     println(nested)
-
-    val expect: List[Any] = List(
-      Number(1),
-      Number(2),
-      List(
-        List(
-          Number(3),
-          Number(4)
-        ),
-        Number(5)
-      )
-    )
-
-    assert(nested == expect)
+    
+    assert(nested == None)
   }
 
 }
