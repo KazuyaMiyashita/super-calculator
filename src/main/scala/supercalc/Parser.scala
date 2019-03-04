@@ -20,16 +20,16 @@ object Parser {
    */
   def nest(tokens: List[Token]): List[Any] = {
 
-    def proc(nest: List[Any], remain: List[Token]): (List[Any], List[Token]) = {
-      if (remain.isEmpty) (nest, Nil)
+    def proc(nest: List[Any], remain: List[Token], acc: List[Token]): (List[Any], List[Token], List[Token]) = {
+      if (remain.isEmpty) (nest, Nil, Nil)
       else {
         remain.head match {
           case ParenOpen => {
-            val (n, r) = proc(Nil, remain.tail)
-            proc(n ::: nest, r)
+            val (n, r, a) = proc(Nil, remain.tail, Nil)
+            proc(n ::: nest, r, a)
           }
-          case ParenClose => proc(nest :: Nil, remain.tail)
-          case t => proc(t :: nest, remain.tail)
+          case ParenClose => proc(nest :: Nil, remain.tail, Nil)
+          case t => proc(t :: nest, remain.tail, Nil)
         }
       }
     }
@@ -38,7 +38,7 @@ object Parser {
       nest.reverse.map { n => if (n.isInstanceOf[List[Any]]) reverse(n.asInstanceOf[List[Any]]) else n }
     }
 
-    val (nest, _) = proc(Nil, tokens)
+    val (nest, _, _) = proc(Nil, tokens, Nil)
     reverse(nest)
   }
 
