@@ -11,13 +11,17 @@ object ParenClose extends Paren {
   override def toString = "ParenClose"
 }
 
-class Command extends Token
-
-object CommandAdd extends Command {
-  override def toString = "CommandAdd"
+trait Command extends Token {
+  val priority: Int
 }
+
 object CommandMultiple extends Command {
+  val priority = 0
   override def toString = "CommandMultiple"
+}
+object CommandAdd extends Command {
+  val priority = 1
+  override def toString = "CommandAdd"
 }
 
 case class Number(num: Int) extends Token
