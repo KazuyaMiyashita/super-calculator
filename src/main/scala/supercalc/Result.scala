@@ -1,0 +1,3 @@
+package supercalc
+
+class Result
