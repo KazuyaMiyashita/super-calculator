@@ -24,7 +24,7 @@ object Nest {
   }
   def apply[T](value: Nest[T]*) = NestList(value: _*)
 
-  def group[T](tokens: List[T], parenOpen: T, parenClose: T): List[Nest[T]] = {
+  def group[T](tokens: List[T], parenOpen: T, parenClose: T): Nest[T] = {
     def process(nest: List[Nest[T]], acc: List[Nest[T]], remain: List[T]): (List[Nest[T]], List[Nest[T]], List[T]) = {
       remain match {
         case Nil => (nest, Nil, Nil)
@@ -39,7 +39,7 @@ object Nest {
     }
   
     val (nest, _, _) = process(Nil, Nil, tokens)
-    nest.reverse
+    Nest(nest.reverse:_*)
   }
 
 }

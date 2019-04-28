@@ -1,5 +1,7 @@
 package supercalc
 
+import scala.util.Try
+
 object Tokenizer {
 
   val numeric = new NumericCharHandler
@@ -13,7 +15,7 @@ object Tokenizer {
    * @param str ex. "1 add (22 multiple 333)"
    * @return List(Number(1), AddMultiple, ParenOpen, ...
    */
-  def tokenize(str: String): List[Token] = {
+  def tokenize(str: String): Try[List[Token]] = Try {
     val (tokens, _) = handleAnything(Nil, str.toList)
     tokens.reverse
   }
